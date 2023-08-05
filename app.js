@@ -15,7 +15,7 @@ dotenv.config({ path: '.env' });
 // express configration
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.set('port', process.env.PORT || 5500);
 
 // // Middleware to parse form datas
@@ -40,11 +40,14 @@ mongoose.connection.on('error', (err) => {
 
 
 // controllers
-const indexController = require("./controllers/index");
+const indexController = require("./controllers");
+const userController = require("./controllers/user");
 
 //routes
 app.get("/", indexController.index);
-
+app.get("/:id", indexController.dyn);
+app.get('/signup', userController.getSignup);
+app.post('/signup', userController.postSignup);
 
 app.listen(app.get('port'), () => {
   console.log(`App is running on http://localhost:${app.get('port')} in ${app.get('env')} mode`);
