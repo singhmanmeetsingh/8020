@@ -1,56 +1,47 @@
-const validator = require('express-validator');
+const { validationResult} = require('express-validator');
 const User = require('../models/User');
 
-exports.getSignup = (req, res) => {
-  if (req.user) {
-    return res.redirect('/');
+ 
+exports.getLogin = (req, res) => {
+  console.log("session", req.session.isLoggedIn)
+   if (req.session.isLoggedIn) {
+    return res.redirect('/dashboard'); // Redirect to a dashboard page if the user is logged in
+  } else {
+    console.log("ddsfdsfd")
+    return res.render('./Login')
   }
-  res.render('account/signup', {
-    title: 'Create Account'
-  });
+
 };
 
 
-/**
- * POST /signup
- * Create a new local account.
- */
-exports.postSignup = (req, res, next) => {
-  console.log("Req signup", req.body);
+exports.postLogin = (req, res, next) => {
+  console.log("Req login", req.body);
 
-  const validationErrors = [];
-  if (!validator.isEmail(req.body.email))
-    validationErrors.push({ msg: "Please enter a valid email address." });
-  if (!validator.isLength(req.body.password, { min: 8 }))
-    validationErrors.push({
-      msg: "Password must be at least 8 characters long",
-    });
-  if (req.body.password !== req.body.confirmPassword)
-    validationErrors.push({ msg: "Passwords do not match" });
+  const validationErrors = validationResult(req);
+  console.log("error", validationErrors)
 
-  if (validationErrors.length) {
-    console.log("valisdsadsadsa", validationErrors);
-    return res.redirect("/signup");
-  }
-  req.body.email = validator.normalizeEmail(req.body.email, {
-    gmail_remove_dots: false,
-  });
 
-  const user = new User({
+  const user = {
     email: req.body.email,
-    password: req.body.password,
-  });
+    passoword: req.body.passoword
+  }
 
-  console.log("user", user);
-
-  
-  user.save()
-    .then((saved) => {
-        console.log("saved", saved)
-        // 
+  User.findOne(user)
+    .then((user) => {
+      console.log("Found user:", user);
+      req.session.email = user.email;
+      req.session.passoword = user.passoword;
+      req.session.isLoggedIn = true;
+      res.render('./Dashboard')
     })
-    .catch((err)=>{
-        console.log("error", err)
-        //add error
+    .catch((err) =>{
+      console.log("err", err)
+      return res.redirect('/login')
     })
 };
+
+
+exports.logout = (req, res, next) => {
+  req.session.destroy();
+  return res.redirect('/')
+}

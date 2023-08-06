@@ -1,4 +1,5 @@
 
+const { check } = require('express-validator');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
@@ -6,6 +7,7 @@ const session = require('express-session');
 const logger = require('morgan');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
+
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -17,6 +19,21 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.set('port', process.env.PORT || 5500);
+// SESSION START
+app.use(
+  session({
+    key: 'user_sid',
+    secret: 'qwerty@1234',
+    resave:false,
+    saveUninitialized: false,
+    // cookie:{
+    //   expires:500000,
+    // },
+
+  })
+)
+
+// SESSION END
 
 // // Middleware to parse form datas
 // app.use(bodyParser.urlencoded({ extended: false }));
@@ -42,12 +59,39 @@ mongoose.connection.on('error', (err) => {
 // controllers
 const indexController = require("./controllers");
 const userController = require("./controllers/user");
+const dashboardController = require("./controllers/dashboard")
+
+// // middleware
+// app.use((req, res, next) => {
+//   if(req.session.user && req.cookies.user_sid){
+//     // redirect to home page
+//   }
+//   next()
+// })
 
 //routes
 app.get("/", indexController.index);
-app.get("/:id", indexController.dyn);
-app.get('/signup', userController.getSignup);
-app.post('/signup', userController.postSignup);
+
+app.get('/login', userController.getLogin); 
+app.post('/login', [
+  check('email', 'Your email is not valid').not().isEmpty(),
+  check('password').not().isEmpty()
+], userController.postLogin);
+
+app.post('/logout', userController.logout)
+
+app.get('/dashboard', dashboardController.index)
+
+app.post('/dashboard/add',[
+  check('title').not().isEmpty(),
+  check('content').not().isEmpty()
+]
+,dashboardController.addPage)
+
+app.post('/dashboard/delete', dashboardController.deletePage)
+
+app.get('/:pageName', indexController.dyn)
+
 
 app.listen(app.get('port'), () => {
   console.log(`App is running on http://localhost:${app.get('port')} in ${app.get('env')} mode`);
