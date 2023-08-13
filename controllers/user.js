@@ -30,7 +30,7 @@ exports.postLogin = (req, res, next) => {
     .then((user) => {
       // User found, set session variables and redirect to dashboard
       req.session.email = user.email;
-      req.session.password = user.password; // Typo: should be "password"
+      req.session.password = user.password;
       req.session.isLoggedIn = true;
       res.redirect("/dashboard");
     })

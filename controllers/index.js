@@ -16,8 +16,6 @@ exports.dyn = async (req, res) => {
     return page;
   });
 
-  console.log("sdsdsdsdsds");
-
   // Find a page with the provided slug
   Page.findOne({ slug: req.params.slug })
     .then((page) => {
