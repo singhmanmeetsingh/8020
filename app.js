@@ -1,3 +1,4 @@
+// import modules and dependencies
 const { check } = require("express-validator");
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -21,7 +22,7 @@ app.set("port", process.env.PORT || 5500);
 // SESSION START
 app.use(
   session({
-    key: "user_sid",
+    key: "user",
     secret: "qwerty@1234",
     resave: false,
     saveUninitialized: false,
@@ -31,11 +32,6 @@ app.use(
   })
 );
 
-// SESSION END
-
-// // Middleware to parse form datas
-// app.use(bodyParser.urlencoded({ extended: false }));
-
 // path for all the css imports
 app.use(express.static(__dirname + "/public"));
 
@@ -43,9 +39,7 @@ app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 
 console.log("URI", process.env.MONGODB_URI);
-/**
- * Connect to MongoDB.
- */
+
 mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on("error", (err) => {
   console.error(err);
