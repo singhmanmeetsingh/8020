@@ -59,6 +59,10 @@
         padding: 0 1rem;
       }
 
+      img {
+        max-width: 100%;
+      }
+
       article {
         background-color: white;
         padding: 1.5rem;
@@ -83,33 +87,25 @@
 
     <nav>
       <ul>
-            <li><a href="/">Home</a></li>
-            <% if (typeof(pages) !== 'undefined' && pages.length > 0) { %>
-            
-            <% for (let page of pages) { %>
-                <li><a href="<%=page.slug %>"><%= page.title %></a></li>
-            <% } %> <% } %>
-            <li><a href="/login">Login</a></li>
+        <li><a href="/">Home</a></li>
+        <% if (typeof(pages) !== 'undefined' && pages.length > 0) { %> <% for
+        (let page of pages) { %>
+        <li><a href="<%=page.slug %>"><%= page.title %></a></li>
+        <% } %> <% } %>
+        <li><a href="/login">Login</a></li>
       </ul>
     </nav>
 
     <main>
       <article>
-        <h2>This is a dynamic page</h2>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel
-          enim id nisi convallis volutpat ac eget felis.
-        </p>
-      </article>
-      <div>
-        <%= page.title %> <%= page.slug %>
         <img src="<%= page.imgUrl %>" alt="No image found" />
-        <%= page.content %>
-      </div>
+        <h2><%= page.title %></h2>
+        <p><%= page.content %></p>
+      </article>
     </main>
 
     <footer>
-      <p>&copy; 2023 My Blog. All rights reserved.</p>
+      <p>&copy; 2023 Copyright. Mayank Thite & Manmeet Singh.</p>
     </footer>
   </body>
 </html>
