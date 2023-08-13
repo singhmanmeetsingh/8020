@@ -61,9 +61,7 @@ const userController = require("./controllers/user");
 const dashboardController = require("./controllers/dashboard");
 
 //routes
-app.get("/", (req, res) => {
-  res.render("Home");
-});
+app.get("/", dashboardController.getHome);
 
 app.get("/login", userController.getLogin);
 
@@ -98,7 +96,15 @@ app.get("/dashboard/manage", dashboardController.getManagePage);
 
 app.get("/dashboard/edit/:slug", dashboardController.getEditPage);
 
-app.post("/dashboard/edit/:slug", dashboardController.postEditPage);
+app.post(
+  "/dashboard/edit/:slug",
+  [
+    check("title", "Enter a valid title").not().isEmpty(),
+    check("slug", "Enter a valid slug").not().isEmpty(),
+    check("content", "Content cannot be empty").not().isEmpty(),
+  ],
+  dashboardController.postEditPage
+);
 
 app.post("/dashboard/delete/", dashboardController.deletePage);
 

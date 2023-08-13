@@ -100,7 +100,13 @@
             <li><a href="#">Login</a></li>
         </ul>
     </nav>
-
+    <div>
+          <% if (typeof(errors) !== 'undefined' && errors.length > 0) { %>
+          <h3>Errors</h3>
+          <% for (let error of errors) { %>
+          <p class="error"><%= error.msg %></p>
+          <% } %> <% } %>
+    </div>
     <form action="" method="POST">
         <label for="email">Email: </label>
         <input type="email" name="email" id="email" /><br />

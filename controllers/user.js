@@ -12,11 +12,14 @@ exports.getLogin = (req, res) => {
 };
 
 exports.postLogin = (req, res, next) => {
-  const errors = validationResult(req);
-
+  let errors = validationResult(req);
+  let data;
   if (!errors.isEmpty()) {
-    console.log('ERROR in login form', { errors: errors.errors });
+    data = { errors: errors.array() };
+    res.render("Login", data)
   }
+
+  console.log("login errors", )
 
   const user = {
     email: req.body.email,
@@ -28,12 +31,19 @@ exports.postLogin = (req, res, next) => {
       req.session.email = user.email;
       req.session.passoword = user.passoword;
       req.session.isLoggedIn = true;
-      res.redirect('/dashboard')
+      res.redirect("/dashboard");
     })
-    .catch((err) =>{
-      console.log("err", err)
-      return res.render('Login', err)
-    })
+    .catch((err) => {
+      console.log("err", err);
+      errors = [
+        {
+          msg: "Invalid username por password ",
+        },
+      ];
+
+      data = { errors: errors };
+      return res.render("Login", data);
+    });
 };
 
 

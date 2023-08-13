@@ -83,8 +83,13 @@
 
     <nav>
       <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="/login">Login</a></li>
+            <li><a href="/">Home</a></li>
+            <% if (typeof(pages) !== 'undefined' && pages.length > 0) { %>
+            
+            <% for (let page of pages) { %>
+                <li><a href="<%=page.slug %>"><%= page.title %></a></li>
+            <% } %> <% } %>
+            <li><a href="/login">Login</a></li>
       </ul>
     </nav>
 

@@ -54,7 +54,7 @@ exports.postAddPage = (req, res, next) => {
     page
       .save()
       .then((page) => {
-        return res.render("Manage", data);
+        return res.redirect("/dashboard/manage");
       })
       .catch((err) => {
         console.log("error", err);
@@ -85,45 +85,49 @@ exports.getEditPage = (req, res, next) => {
     .catch((err) => res.redirect("/dashboard"));
 };
 
-// exports.postEditPage = async (req, res, next) => {
-//   let errors = validationResult(req);
-//   let data = await Page.findOne({ slug: req.params.slug })
-//     .then((page) => {
-//       console.log("Page Found!", page);
-//       return page;
-//     })
-//     .catch((err) => res.redirect("/dashboard"));
+exports.postEditPage = async (req, res, next) => {
+  let errors = validationResult(req);
+  let data = await Page.findOne({ slug: req.params.slug })
+    .then((page) => {
+      console.log("Page Found!", page);
+      return page;
+    })
+    .catch((err) => res.redirect("/dashboard"));
 
-//   let page = data;
-//   if (!errors.isEmpty()) {
-//     // res.locals = errors.array();
-//     // data = { page, errors: errors.array() };
-//     // console.log("Errors", data);
-//     return res.render("Edit", { page, errors: errors.array() });
-//   } else {
-//     // let image = req.files.image;
-//     // let imagePath = filePath + image.name;
-//     // image.mv(imagePath, function (err) {
-//     //   if (err) console.log(err);
-//     // });
-
-//     Page.updateOne(
-//       { slug: req.params.slug },
-//       {
-//         $set: {
-//           title: req.body.title,
-//           slug: req.params.slug,
-//           content: req.body.content,
-//         },
-//       }
-//     )
-//       .then((page) => {
-//         console.log("Page Found!", page);
-//         res.render("Manage");
-//       })
-//       .catch((err) => res.redirect("/dashboard"));
-//   }
-// };
+  let page = data;
+  if (!errors.isEmpty()) {
+    return res.render("Edit", { page, errors: errors.array() });
+  } else {
+    let image;
+    let imagePath
+    if (req?.files?.image) {
+      image = req.files.image;
+      imagePath = filePath + image.name;
+      image.mv(imagePath, function (err) {
+        if (err) console.log(err);
+      });
+    }
+    Page.updateOne(
+      { slug: req.params.slug },
+      {
+        $set: {
+          title: req.body.title,
+          slug: req.body.slug,
+          content: req.body.content,
+          imgUrl : req?.files?.image ? "images/" + image.name : page.image
+        },
+      },
+      {
+        multi: true,
+      }
+    )
+      .then((page) => {
+        console.log("Page Found!", page);
+        res.redirect("/dashboard/manage");
+      })
+      .catch((err) => res.redirect("/dashboard"));
+  }
+};
 
 exports.deletePage = (req, res, next) => {
   console.log("Inside delete page", req.body.slug);
@@ -134,3 +138,11 @@ exports.deletePage = (req, res, next) => {
     })
     .catch((err) => res.redirect("/dashboard"));
 };
+
+
+exports.getHome = (req,res,next) => {
+
+    Page.find({}).then((page) => {
+      res.render("Home", { pages: page } );
+    });
+}
