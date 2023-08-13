@@ -1,23 +1,24 @@
-
 const mongoose = require("mongoose");
-
 
 const PagesSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      unique: true
+      unique: true,
+    },
+    slug: {
+      type: String,
+      unique: true,
     },
     imgUrl: {
-        type:String
+      type: String,
     },
     content: {
-        type:String
-    }
+      type: String,
+    },
   },
   { timestamps: true }
 );
-
 
 const Pages = new mongoose.model("Pages", PagesSchema);
 

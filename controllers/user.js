@@ -3,40 +3,36 @@ const User = require('../models/User');
 
  
 exports.getLogin = (req, res) => {
-  console.log("session", req.session.isLoggedIn)
    if (req.session.isLoggedIn) {
     return res.redirect('/dashboard'); // Redirect to a dashboard page if the user is logged in
   } else {
-    console.log("ddsfdsfd")
     return res.render('./Login')
   }
 
 };
 
-
 exports.postLogin = (req, res, next) => {
-  console.log("Req login", req.body);
+  const errors = validationResult(req);
 
-  const validationErrors = validationResult(req);
-  console.log("error", validationErrors)
-
+  if (!errors.isEmpty()) {
+    console.log('ERROR in login form', { errors: errors.errors });
+  }
 
   const user = {
     email: req.body.email,
-    passoword: req.body.passoword
+    password: req.body.password
   }
-
   User.findOne(user)
     .then((user) => {
       console.log("Found user:", user);
       req.session.email = user.email;
       req.session.passoword = user.passoword;
       req.session.isLoggedIn = true;
-      res.render('./Dashboard')
+      res.redirect('/dashboard')
     })
     .catch((err) =>{
       console.log("err", err)
-      return res.redirect('/login')
+      return res.render('Login', err)
     })
 };
 

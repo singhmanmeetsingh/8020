@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      /* Reset some default styles */
+      body,
+      h1,
+      h2,
+      h3,
+      p,
+      ul,
+      li,
+      form {
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Body styles */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+      }
+
+      /* Header styles */
+      header {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 1rem 0;
+      }
+
+      /* Navigation styles */
+      nav {
+        background-color: #444;
+        text-align: center;
+      }
+
+      nav ul {
+        list-style: none;
+        padding: 1rem 0;
+      }
+
+      nav ul li {
+        display: inline;
+        margin-right: 1rem;
+      }
+
+      nav ul li a {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+      }
+
+      /* Main content styles */
+      main {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+
+      /* Form styles */
+      form {
+        background-color: white;
+        padding: 1.5rem;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      form label {
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      form input[type="text"],
+      form input[type="file"],
+      form textarea {
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      /* Footer styles */
+      footer {
+        text-align: center;
+        padding: 1rem 0;
+        background-color: #444;
+        color: white;
+      }
+    </style>
+    <title>Add Page</title>
+  </head>
+  <body>
+    <header>
+      <h1>My Blog</h1>
+    </header>
+
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/dashboard/add">Add Page</a></li>
+        <li><a href="/dashboard/manage">Manage Pages</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <div>
+        <% if (typeof(errors) !== 'undefined') { %>
+        <h3>Errors</h3>
+        <% for (let error of errors) { %>
+        <p class="error"><%= error.msg %></p>
+        <% } %> <% }%>
+      </div>
+      <h1>Add New Page</h1>
+      <form action="" method="post" enctype="multipart/form-data">
+        <label for="title">Post Title:</label>
+        <input type="text" name="title" id="title" /><br />
+
+        <label for="slug">Slug:</label>
+        <input type="text" name="slug" id="slug" /><br />
+
+        <label for="image">Image Upload:</label>
+        <input type="file" name="image" id="image" /><br />
+
+        <label for="content">Content:</label>
+        <textarea name="content" id="content" rows="10"></textarea><br />
+
+        <input type="submit" value="Add Page" />
+      </form>
+    </main>
+
+    <footer>
+      <p>&copy; 2023 My Blog. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
