@@ -1,6 +1,7 @@
 // import modules and dependencies
 const { check } = require("express-validator");
 const express = require("express");
+const path = require('path');
 const bodyParser = require("body-parser");
 const app = express();
 const session = require("express-session");
@@ -22,15 +23,22 @@ app.set("port", process.env.PORT || 5500);
 // SESSION START
 app.use(
   session({
-    key: "user",
-    secret: "qwerty@1234",
+    secret: "randomsecretcode",
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
   })
 );
 
 // path for all the css imports
 app.use(express.static(__dirname + "/public"));
+
+app.set("views", path.join(__dirname, "views"));
+
+// defining tinymce path
+app.use(
+  "/tinymce",
+  express.static(path.join(__dirname, "node_modules", "tinymce"))
+);
 
 // set the view engine to ejs
 app.set("view engine", "ejs");
