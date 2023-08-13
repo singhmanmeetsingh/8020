@@ -26,9 +26,6 @@ app.use(
     secret: "qwerty@1234",
     resave: false,
     saveUninitialized: false,
-    // cookie:{
-    //   expires:500000,
-    // },
   })
 );
 
@@ -63,7 +60,7 @@ app.post(
   "/login",
   [
     check("email", "Your email is not valid").not().isEmpty(),
-    check("password").not().isEmpty(),
+    check("password", "Please enter a password").not().isEmpty(),
   ],
   userController.postLogin
 );
@@ -72,9 +69,7 @@ app.get("/logout", userController.logout);
 
 app.get("/dashboard", dashboardController.index);
 
-app.get(
-  "/dashboard/add",dashboardController.getAddPage
-);
+app.get("/dashboard/add", dashboardController.getAddPage);
 
 app.post(
   "/dashboard/add",
