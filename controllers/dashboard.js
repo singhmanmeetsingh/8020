@@ -41,7 +41,7 @@ exports.postAddPage = (req, res, next) => {
     image.mv(imagePath, function (err) {
       if (err) console.log(err);
     });
-
+    
     const page = new Page({
       title: req.body.title,
       slug: req.body.slug,
