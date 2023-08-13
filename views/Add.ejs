@@ -148,7 +148,13 @@
         <input type="file" name="image" id="image" /><br />
 
         <label for="content">Content:</label>
-        <textarea name="content" id="content" rows="10"></textarea><br />
+        <!-- <input type="text" id="content" name="content" /> -->
+        <textarea name="content" id="content" rows="10"></textarea>
+        <script
+          type="application/javascript"
+          src="/tinymce/tinymce.min.js"
+        ></script>
+        <br />
 
         <input type="submit" value="Add Page" />
       </form>
@@ -157,5 +163,11 @@
     <footer>
       <p>&copy; 2023 Copyright. Mayank Thite & Manmeet Singh.</p>
     </footer>
+    <script>
+      tinymce.init({
+        selector: "textarea#content",
+        height: 200,
+      });
+    </script>
   </body>
 </html>
