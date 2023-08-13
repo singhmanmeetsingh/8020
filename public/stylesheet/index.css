@@ -20,8 +20,18 @@ body {
 header {
   background-color: #333;
   color: white;
-  text-align: center;
-  padding: 1rem 0;
+  padding: 1rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header img {
+  max-width: 60px;
+}
+
+header h1 {
+  display: inline-block;
 }
 
 /* Navigation styles */
@@ -64,8 +74,10 @@ article {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-h2, img, p {
-    padding: 10px 0;
+h2,
+img,
+p {
+  padding: 10px 0;
 }
 
 /* Footer styles */
