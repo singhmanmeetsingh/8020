@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="stylesheet/manage.css" />
     <style>
       /* Reset some default styles */
       body,
@@ -60,10 +61,20 @@
         padding: 0 1rem;
       }
 
+      h1 {
+        margin: 20px 0;
+      }
+
       /* Table styles */
       table {
         width: 100%;
         border-collapse: collapse;
+      }
+
+      table,
+      tr,
+      td {
+        border: 1px solid #000;
       }
 
       th,
@@ -81,6 +92,18 @@
         background-color: #f2f2f2;
       }
 
+      input[type="submit"] {
+        padding: 12px 45px;
+        background-color: #191919;
+        color: #fff;
+        cursor: pointer;
+        transition: 0.5s;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #4c4c4c;
+      }
+
       /* Footer styles */
       footer {
         text-align: center;
@@ -89,7 +112,6 @@
         color: white;
       }
     </style>
-    <title>Manage Pages</title>
   </head>
   <body>
     <header>
